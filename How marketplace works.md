@@ -42,3 +42,20 @@ Important functions:
 - Withdraw
 - Purchase
 - Destroy
+
+
+- New idea : 
+ Tool to list and sell nfts on a personal website.
+
+- Proxy address
+- Token uri 
+
+So opensea uses a proxy to sell a listed nft on the users behalf without owning the Nft. How is it not owned? 
+
+- An address is mapped to a contract
+
+- Opensea uses Wyvern Protocol
+
+- It uses atomic match to match buyer and seller
+
+- Delegate call is used
