@@ -59,3 +59,11 @@ So opensea uses a proxy to sell a listed nft on the users behalf without owning 
 - It uses atomic match to match buyer and seller
 
 - Delegate call is used
+
+What I will be implementing :
+
+- Fuction to create and mint an Nft
+
+- The approve function gives access to another account to transfer the nft 
+
+- In other to list, the owner has to aprove of the nft contract to transfer the asset
