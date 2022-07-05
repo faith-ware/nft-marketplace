@@ -529,6 +529,29 @@ export const abi = [
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_nftContractAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_newprice",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateListing",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "withdrawBalance",
     "outputs": [],
@@ -538,7 +561,7 @@ export const abi = [
 ];
 
 export const MarketPlace_Contract_Address =
-  "0xc2c6Aa9d6e6517A28B2B7115D7aE60E0a12f4Ba3";
+  "0xb2fF6a3c185fd3928a4BB5485b3F4357E8FD463B";
 
 export const userNftAbi = [
   {

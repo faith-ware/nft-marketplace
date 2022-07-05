@@ -33,7 +33,7 @@ contract NftMarkeplace is ReentrancyGuard, ERC721URIStorage {
     mapping(address => mapping(uint256 => Listing)) public listings;
     mapping(address => uint) private sellerBalance;
 
-    constructor (string memory baseURI) ERC721("LW3Punks", "LW3P") {
+    constructor (string memory baseURI) ERC721("FaMarket", "FaMt") {
       _baseTokenURI = baseURI;
     }
 
@@ -80,12 +80,23 @@ contract NftMarkeplace is ReentrancyGuard, ERC721URIStorage {
       require(_price > 0, "Price must be greater than 0");
       IERC721 nft = IERC721(_nftContractAddress);
 
-      if (nft.getApproved(_tokenId) != address(this)) {
+      // if (nft.getApproved(_tokenId) != address(this)) {
+      //   revert("Not Approved");
+      // }
+
+      if (!(nft.isApprovedForAll(msg.sender, address(this)))) {
         revert("Not Approved");
       }
 
       listings[_nftContractAddress][_tokenId] = Listing(_price, msg.sender);
       emit ItemListed(msg.sender, _nftContractAddress, _tokenId, _price);
+    }
+
+    function updateListing(address _nftContractAddress, uint _tokenId, uint _newprice) external isOwner(_nftContractAddress, _tokenId, msg.sender) isListed(_nftContractAddress, _tokenId){
+      Listing memory particularItem = listings[_nftContractAddress][_tokenId];
+      require(_newprice > 0, "Price is lesser than 0");
+      require(particularItem.seller == msg.sender, "You are not the owner");
+      listings[_nftContractAddress][_tokenId] = Listing(_newprice, msg.sender);
     }
 
     function buyItem(address _nftContractAddress, uint _tokenId) external payable {

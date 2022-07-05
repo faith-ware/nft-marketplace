@@ -43,13 +43,17 @@ export default function Home() {
     const listItem = async ()=> {
       try {
         let marketPlaceContract = new ethers.Contract(MarketPlace_Contract_Address, abi, signer);
-        let userContract = new ethers.Contract(MarketPlace_Contract_Address, abi, signer);
-        // let approvalCheck = await userContract.getApproved(2);
+        let userContract = new ethers.Contract("0xd9dcdbe22892447afa7d67275dc72d19b3420589", abi, signer);
+        // let approvalCheck = await userContract.getApproved(1);
         // console.log(approvalCheck);
-        // let userApproval = await userContract.approve(MarketPlace_Contract_Address, 2);
-        // // console.log(userContract.getOwnerOf(1));
-        // await userApproval.wait();
-        let transaction = await marketPlaceContract.listItem(MarketPlace_Contract_Address, 2, 310000000000000);
+        let userApproval = await userContract.setApprovalForAll(MarketPlace_Contract_Address, true);
+        // console.log(userContract.getOwnerOf(1));
+        await userApproval.wait();
+
+        let appCheck = await userContract.isApprovedForAll("0xa90594c940146E7a887B5A593f3add4F7661832e", MarketPlace_Contract_Address);
+        console.log(appCheck);
+
+        let transaction = await marketPlaceContract.listItem("0xd9dcdbe22892447afa7d67275dc72d19b3420589", 2, 310000000000000);
         await transaction.wait();
         // let nextTran = await marketPlaceContract.sayHello("0xD9DCdbe22892447aFA7d67275DC72d19b3420589", 2);
         // console.log(nextTran);
@@ -61,7 +65,7 @@ export default function Home() {
 
     const buyItem = async () => {
       try {
-        let nftContractAddress = MarketPlace_Contract_Address;
+        let nftContractAddress = "0xd9dcdbe22892447afa7d67275dc72d19b3420589";
         let marketPlaceContract = new ethers.Contract(MarketPlace_Contract_Address, abi, signer);
         let wei = ethers.BigNumber.from(310000000000000)
         let buyItem = await marketPlaceContract.buyItem(nftContractAddress, 2, {
@@ -71,6 +75,17 @@ export default function Home() {
         await buyItem.wait();
       } catch (err) {
         alert("Unable to buy item");
+        console.log(err);
+      }
+    }
+
+    const updateListedItem = async () => {
+      try {
+        let marketPlaceContract = new ethers.Contract(MarketPlace_Contract_Address, abi, signer);
+        let checkListing = await marketPlaceContract.updateListing("0xD9DCdbe22892447aFA7d67275DC72d19b3420589", 2, 410000000000000);
+        await checkListing.wait();
+      } catch (err) {
+        alert("Unable to check item");
         console.log(err);
       }
     }
@@ -144,6 +159,7 @@ export default function Home() {
               <button onClick={checkListedItem}>Check Item</button>
               <button onClick={withdrawBalance}>Withdraw Balance</button>
               <button onClick={mint}>Mint</button>
+              <button onClick={updateListedItem}>Update Item</button>
             </div>
         </div>
     )
