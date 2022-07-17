@@ -99,6 +99,10 @@ contract NftMarkeplace is ReentrancyGuard, ERC721URIStorage {
       listings[_nftContractAddress][_tokenId] = Listing(_newprice, msg.sender);
     }
 
+    function deleteListing(address _nftContractAddress, uint _tokenId) external isOwner(_nftContractAddress, _tokenId, msg.sender) isListed(_nftContractAddress, _tokenId){
+      delete listings[_nftContractAddress][_tokenId];
+    }
+
     function buyItem(address _nftContractAddress, uint _tokenId) external payable {
       Listing memory particularItem = listings[_nftContractAddress][_tokenId];
       
@@ -111,6 +115,8 @@ contract NftMarkeplace is ReentrancyGuard, ERC721URIStorage {
       IERC721(_nftContractAddress).safeTransferFrom(particularItem.seller, msg.sender, _tokenId);
       emit ItemBought(msg.sender, _nftContractAddress, _tokenId, particularItem.price);
     }
+
+    
 
     
     function getListedItem(address _nftContractAddress, uint _tokenId) public view returns (Listing memory) {
